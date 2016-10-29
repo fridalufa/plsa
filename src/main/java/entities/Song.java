@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import java.util.List;
 
 /**
  * @author fridalufa
@@ -9,7 +11,6 @@ import javax.persistence.*;
 public class Song {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Lob
@@ -18,17 +19,15 @@ public class Song {
     @Lob
     public String title;
 
-    @Lob
-    public String lyrics;
-
-    @Lob
-    public String url;
+    @ElementCollection
+    public List<Word> lyrics;
 
     public Song() {}
 
-    public Song(String interpret, String title, String url) {
+    public Song(Integer id, String interpret, String title, List<Word> lyrics) {
+        this.id = id;
         this.interpret = interpret;
         this.title = title;
-        this.url = url;
+        this.lyrics = lyrics;
     }
 }

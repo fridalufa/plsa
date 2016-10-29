@@ -1,6 +1,7 @@
 package storage;
 
 import entities.Song;
+import entities.Word;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -19,9 +20,10 @@ public class Hibernator {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         sessionFactory = new Configuration()
                 .addAnnotatedClass(Song.class)
+                .addAnnotatedClass(Word.class)
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
                 .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/plsa?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
-                .setProperty("hibernate.connection.username", "root")
+                .setProperty("hibernate.connection.username", "plsa")
                 .setProperty("hibernate.hbm2ddl.auto", "update")
                 .buildSessionFactory();
 
