@@ -16,7 +16,27 @@ public class PLSA {
     private int numTopics;
     private int iterations;
 
-    public PLSA(Corpus corpus, int numTopics, int iterations){
+    /**
+     * Document-term-matrix
+     */
+    byte[][] docTermMatrix;
+
+    /**
+     * P(z|d)
+     */
+    float[][] docTopicProb;
+
+    /**
+     * P(w|z)
+     */
+    float[][] topicWordProb;
+
+    /**
+     * P(z|d,w)
+     */
+    float[][][] topicProb;
+
+    public PLSA(Corpus corpus, int numTopics, int iterations) {
         this.corpus = corpus;
         this.numTopics = numTopics;
         this.iterations = iterations;
@@ -24,16 +44,29 @@ public class PLSA {
 
     public void run() {
 
-        //byte[][] docTermMatrix = buildDocumentTermMatrix();
-        //Util.printByteMatrix(docTermMatrix);
+        Util.log("Constructing document-term matrix");
 
-        // P(z|d)
-        float[][] docTopicProb = Util.initNormalizedRandomMatrix(corpus.getSongs().size(), numTopics);
+        docTermMatrix = buildDocumentTermMatrix();
 
-        Util.printFloatMatrix(docTopicProb);
+        Util.log("Initializing matrices");
+
+        docTopicProb = Util.initNormalizedRandomMatrix(corpus.getSongs().size(), numTopics);
+
+        topicWordProb = Util.initNormalizedRandomMatrix(numTopics, corpus.getVocabulary().size());
+
+        topicProb = new float[corpus.getSongs().size()][corpus.getVocabulary().size()][numTopics];
+
+        Util.log("Starting EM-algorithm with " + iterations + " iterations");
+
+        for (int iteration = 0; iteration < iterations; iteration++) {
+            Util.log("Starting E step (iteration #"+(iteration+1)+")");
+            Util.log("Starting M step (iteration #"+(iteration+1)+")");
+        }
+
+        Util.log("Model fitting finished");
     }
 
-    private byte[][] buildDocumentTermMatrix(){
+    private byte[][] buildDocumentTermMatrix() {
 
         List<Song> songs = corpus.getSongs();
         String[] vocabulary = corpus.getVocabulary().toArray(new String[corpus.getVocabulary().size()]);
@@ -45,7 +78,7 @@ public class PLSA {
 
         byte[][] docTermMatrix = new byte[corpus.getSongs().size()][corpus.getVocabulary().size()];
 
-        for (int d = 0; d < songs.size(); d++){
+        for (int d = 0; d < songs.size(); d++) {
             for (Word w : songs.get(d).lyrics) {
                 w.docTermIndex = indexMap.get(w.word);
                 docTermMatrix[d][w.docTermIndex] = w.count.byteValue();
@@ -54,7 +87,6 @@ public class PLSA {
 
         return docTermMatrix;
     }
-
 
 
 }
