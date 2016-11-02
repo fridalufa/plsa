@@ -27,5 +27,6 @@
     <orderEntry type="library" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:6.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.14.2.1" level="project" />
   </component>
 </module>

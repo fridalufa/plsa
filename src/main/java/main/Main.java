@@ -1,12 +1,15 @@
 package main;
 
+import entities.Corpus;
 import entities.Song;
 import entities.Word;
 import org.hibernate.Transaction;
+import org.hibernate.mapping.Array;
+import plsa.PLSA;
 import storage.Hibernator;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.TypedQuery;
+import java.util.*;
 
 
 /**
@@ -15,19 +18,21 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        List<Word> lyrics = new ArrayList<Word>();
-        lyrics.add(new Word("Hallo", 1));
-        lyrics.add(new Word("Welt", 1));
-
-        Song s = new Song(1, "Fridalufa", "Title", lyrics);
-
+        Corpus c = new Corpus();
 
 
         Transaction t = Hibernator.mainSession.beginTransaction();
-        Hibernator.mainSession.save(s);
+        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(100);
+        List<Song> songs = query.getResultList();
         t.commit();
+
+        songs.forEach((song) -> c.add(song));
 
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
+
+        PLSA plsa = new PLSA(c, 3, 10);
+        plsa.run();
     }
+
 }

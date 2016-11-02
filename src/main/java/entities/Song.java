@@ -13,10 +13,8 @@ public class Song {
     @Id
     private Integer id;
 
-    @Lob
     public String interpret;
 
-    @Lob
     public String title;
 
     @ElementCollection
