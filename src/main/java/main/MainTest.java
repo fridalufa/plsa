@@ -46,7 +46,7 @@ public class MainTest {
 
         c.add(fishermanAndWife);
 
-        PLSA plsa = new PLSA(c, 3, 10);
+        PLSA plsa = new PLSA(c, 5, 10);
         plsa.run();
 
     }

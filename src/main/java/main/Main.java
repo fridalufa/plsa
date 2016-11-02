@@ -21,10 +21,10 @@ public class Main {
         Corpus c = new Corpus();
 
 
-        Transaction t = Hibernator.mainSession.beginTransaction();
+        //Transaction t = Hibernator.mainSession.beginTransaction();
         TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(100);
         List<Song> songs = query.getResultList();
-        t.commit();
+        //t.commit();
 
         songs.forEach((song) -> c.add(song));
 
