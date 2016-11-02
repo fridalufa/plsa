@@ -24,6 +24,9 @@ public class PLSA {
     public void run() {
 
         byte[][] docTermMatrix = buildDocumentTermMatrix();
+
+        c.getSongs().get(0).lyrics.forEach(w -> System.out.print (w.docTermIndex+" "));
+        System.out.println();
         printMatrix(docTermMatrix);
     }
 
@@ -41,7 +44,8 @@ public class PLSA {
 
         for (int d = 0; d < songs.size(); d++){
             for (Word w : songs.get(d).lyrics) {
-                docTermMatrix[d][indexMap.get(w.word)] = w.count.byteValue();
+                w.docTermIndex = indexMap.get(w.word);
+                docTermMatrix[d][w.docTermIndex] = w.count.byteValue();
             }
         }
 

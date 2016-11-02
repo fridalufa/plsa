@@ -20,6 +20,9 @@ public class Song {
     @ElementCollection
     public List<Word> lyrics;
 
+    @Transient
+    private int wordCount;
+
     public Song() {}
 
     public Song(Integer id, String interpret, String title, List<Word> lyrics) {
@@ -27,5 +30,15 @@ public class Song {
         this.interpret = interpret;
         this.title = title;
         this.lyrics = lyrics;
+    }
+
+    public int getWordCount(){
+
+        // cache word count for performance reasons
+        if (wordCount == 0){
+            wordCount = lyrics.stream().map(w -> w.count).reduce(0, (c1, c2) -> c1 + c2);
+        }
+
+        return wordCount;
     }
 }

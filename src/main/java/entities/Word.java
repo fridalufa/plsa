@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 @Embeddable
 public class Word {
@@ -8,6 +9,9 @@ public class Word {
     public String word;
 
     public Integer count;
+
+    @Transient
+    public int docTermIndex;
 
     public Word(){}
 
