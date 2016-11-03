@@ -1,6 +1,7 @@
 package util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.IntStream;
 
@@ -44,8 +45,17 @@ public class Util {
 
         float sum = (float) IntStream.range(0, vector.length).mapToDouble(i -> vector[i]).parallel().sum();
 
+        if (Math.abs(sum) == 0){
+            throw new RuntimeException("Vector sum is 0");
+        }
+
         float[] normalizedVector = new float[vector.length];
         for (int i = 0; i < vector.length; i++) {
+
+            if (vector[i] < 0){
+                throw new RuntimeException("Vector element is < 0! (is "+vector[i]+")");
+            }
+
             normalizedVector[i] = vector[i] / sum;
         }
 

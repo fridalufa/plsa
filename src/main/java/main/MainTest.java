@@ -7,6 +7,7 @@ import plsa.PLSA;
 
 import java.util.Arrays;
 
+
 public class MainTest {
 
     public static void main(String[] args) {
@@ -46,8 +47,7 @@ public class MainTest {
 
         c.add(fishermanAndWife);
 
-        PLSA plsa = new PLSA(c, 5, 100);
+        PLSA plsa = new PLSA(c, 5, 5);
         plsa.run();
-
     }
 }

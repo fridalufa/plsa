@@ -11,30 +11,30 @@ import java.util.List;
 
 public class PLSA {
 
-    private Corpus corpus;
+    public Corpus corpus;
 
-    private int numTopics;
-    private int iterations;
+    public int numTopics;
+    public int iterations;
 
     /**
      * Document-term-matrix
      */
-    byte[][] docTermMatrix;
+    public short[][] docTermMatrix;
 
     /**
      * P(z|d)
      */
-    float[][] docTopicProb;
+    public float[][] docTopicProb;
 
     /**
      * P(w|z)
      */
-    float[][] topicWordProb;
+    public float[][] topicWordProb;
 
     /**
      * P(z|d,w)
      */
-    float[][][] topicProb;
+    public float[][][] topicProb;
 
     public PLSA(Corpus corpus, int numTopics, int iterations) {
         this.corpus = corpus;
@@ -70,8 +70,14 @@ public class PLSA {
                     }
 
                     float[] p = new float[numTopics];
+                    float sum = 0;
                     for (int i = 0; i < numTopics; i++) {
                         p[i] = pZD[i] * pWZ[i];
+                        sum += p[i];
+                    }
+
+                    if (sum <= 0) {
+                        throw new RuntimeException("Uh oh!");
                     }
 
                     topicProb[d][w] = Util.normalize(p);
@@ -89,7 +95,9 @@ public class PLSA {
                     }
                     topicWordProb[z][w] = s;
                 }
+
                 topicWordProb[z] = Util.normalize(topicWordProb[z]);
+
             }
 
             // update P(z|d)
@@ -108,7 +116,7 @@ public class PLSA {
         Util.log("Model fitting finished");
     }
 
-    private byte[][] buildDocumentTermMatrix() {
+    private short[][] buildDocumentTermMatrix() {
 
         List<Song> songs = corpus.getSongs();
         String[] vocabulary = corpus.getVocabulary().toArray(new String[corpus.getVocabulary().size()]);
@@ -118,12 +126,12 @@ public class PLSA {
             indexMap.put(vocabulary[i], i);
         }
 
-        byte[][] docTermMatrix = new byte[corpus.getSongs().size()][corpus.getVocabulary().size()];
+        short[][] docTermMatrix = new short[corpus.getSongs().size()][corpus.getVocabulary().size()];
 
         for (int d = 0; d < songs.size(); d++) {
             for (Word w : songs.get(d).lyrics) {
                 w.docTermIndex = indexMap.get(w.word);
-                docTermMatrix[d][w.docTermIndex] = w.count.byteValue();
+                docTermMatrix[d][w.docTermIndex] = w.count.shortValue();
             }
         }
 
