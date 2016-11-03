@@ -6,6 +6,7 @@ import entities.Word;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import plsa.PLSA;
 
 import java.util.logging.Level;
 
@@ -23,6 +24,7 @@ public class Hibernator {
                 .addAnnotatedClass(Song.class)
                 .addAnnotatedClass(Word.class)
                 .addAnnotatedClass(Corpus.class)
+                .addAnnotatedClass(PLSA.class)
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
                 .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/plsa?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
                 .setProperty("hibernate.connection.username", "plsa")

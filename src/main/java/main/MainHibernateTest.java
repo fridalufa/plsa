@@ -4,6 +4,7 @@ import entities.Corpus;
 import entities.Song;
 import entities.Word;
 import org.hibernate.Transaction;
+import plsa.PLSA;
 import storage.Hibernator;
 
 import java.util.ArrayList;
@@ -16,11 +17,14 @@ public class MainHibernateTest {
         Word word = new Word("hi",2);
         List<Word> wordList =  new ArrayList<>();
         wordList.add(word);
-        corpus.add(new Song(1,"i","you and i",wordList));
+        corpus.add(new Song(9,"i","you and i",wordList));
+
+        PLSA plsa = new PLSA(corpus,1,1);
 
         Transaction trans = Hibernator.mainSession.beginTransaction();
-        Hibernator.mainSession.save(corpus);
+        Hibernator.mainSession.save(plsa);
         trans.commit();
+
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
     }
