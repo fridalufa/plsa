@@ -31,8 +31,8 @@ public class Main {
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
 
-        PLSA plsa = new PLSA(c, 3, 10);
-        plsa.run();
+        //PLSA plsa = new PLSA(c, 3, 10);
+        //plsa.run();
     }
 
 }

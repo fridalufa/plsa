@@ -45,22 +45,64 @@ public class PLSA {
     public void run() {
 
         Util.log("Constructing document-term matrix");
-
         docTermMatrix = buildDocumentTermMatrix();
 
         Util.log("Initializing matrices");
-
         docTopicProb = Util.initNormalizedRandomMatrix(corpus.getSongs().size(), numTopics);
-
         topicWordProb = Util.initNormalizedRandomMatrix(numTopics, corpus.getVocabulary().size());
-
         topicProb = new float[corpus.getSongs().size()][corpus.getVocabulary().size()][numTopics];
 
         Util.log("Starting EM-algorithm with " + iterations + " iterations");
 
         for (int iteration = 0; iteration < iterations; iteration++) {
-            Util.log("Starting E step (iteration #"+(iteration+1)+")");
-            Util.log("Starting M step (iteration #"+(iteration+1)+")");
+
+            Util.log("Starting E step (iteration #" + (iteration + 1) + ")");
+
+            // update P(z|d,w)
+            for (int d = 0; d < corpus.getSongs().size(); d++) {
+                for (int w = 0; w < corpus.getVocabulary().size(); w++) {
+
+                    float[] pZD = docTopicProb[d];
+
+                    float[] pWZ = new float[topicWordProb.length];
+                    for (int i = 0; i < topicWordProb.length; i++) {
+                        pWZ[i] = topicWordProb[i][w];
+                    }
+
+                    float[] p = new float[numTopics];
+                    for (int i = 0; i < numTopics; i++) {
+                        p[i] = pZD[i] * pWZ[i];
+                    }
+
+                    topicProb[d][w] = Util.normalize(p);
+                }
+            }
+
+            Util.log("Starting M step (iteration #" + (iteration + 1) + ")");
+
+            // update P(w|z)
+            for (int z = 0; z < numTopics; z++) {
+                for (int w = 0; w < corpus.getVocabulary().size(); w++) {
+                    float s = 0;
+                    for (int d = 0; d < corpus.getSongs().size(); d++) {
+                        s += docTermMatrix[d][w] * topicProb[d][w][z];
+                    }
+                    topicWordProb[z][w] = s;
+                }
+                topicWordProb[z] = Util.normalize(topicWordProb[z]);
+            }
+
+            // update P(z|d)
+            for (int d = 0; d < corpus.getSongs().size(); d++) {
+                for (int z = 0; z < numTopics; z++) {
+                    float s = 0;
+                    for (int w = 0; w < corpus.getVocabulary().size(); w++) {
+                        s += docTermMatrix[d][w] * topicProb[d][w][z];
+                    }
+                    docTopicProb[d][z] = s;
+                }
+                docTopicProb[d] = Util.normalize(docTopicProb[d]);
+            }
         }
 
         Util.log("Model fitting finished");
