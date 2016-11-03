@@ -3,7 +3,6 @@ package entities;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
