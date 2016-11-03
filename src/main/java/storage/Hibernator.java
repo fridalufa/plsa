@@ -1,5 +1,6 @@
 package storage;
 
+import entities.Corpus;
 import entities.Song;
 import entities.Word;
 import org.hibernate.Session;
@@ -21,6 +22,7 @@ public class Hibernator {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(Song.class)
                 .addAnnotatedClass(Word.class)
+                .addAnnotatedClass(Corpus.class)
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
                 .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/plsa?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
                 .setProperty("hibernate.connection.username", "plsa")

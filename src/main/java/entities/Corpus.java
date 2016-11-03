@@ -1,16 +1,29 @@
 package entities;
 
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GeneratorType;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Entity
 public class Corpus {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer id;
 
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    @OrderColumn
     private List<Song> songs;
 
+    @ElementCollection
     private Set<String> vocabulary;
 
     public Corpus(){
