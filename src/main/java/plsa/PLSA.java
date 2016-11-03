@@ -4,13 +4,23 @@ package plsa;
 import entities.Corpus;
 import entities.Song;
 import entities.Word;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import util.Util;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.HashMap;
 import java.util.List;
 
+@Entity
 public class PLSA {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer id;
 
+    @OneToOne
+    @Cascade(CascadeType.ALL)
     private Corpus corpus;
 
     private int numTopics;
@@ -19,22 +29,28 @@ public class PLSA {
     /**
      * Document-term-matrix
      */
+    @Lob
     byte[][] docTermMatrix;
 
     /**
      * P(z|d)
      */
+    @Lob
     float[][] docTopicProb;
 
     /**
      * P(w|z)
      */
+    @Lob
     float[][] topicWordProb;
 
     /**
      * P(z|d,w)
      */
+    @Transient
     float[][][] topicProb;
+
+    public PLSA(){}
 
     public PLSA(Corpus corpus, int numTopics, int iterations) {
         this.corpus = corpus;
