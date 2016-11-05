@@ -20,7 +20,7 @@ public class PLSA {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @OneToOne
+    @ManyToOne
     @Cascade(CascadeType.ALL)
     public Corpus corpus;
 
@@ -30,7 +30,7 @@ public class PLSA {
     /**
      * Document-term-matrix
      */
-    @Lob
+    @Transient
     public short[][] docTermMatrix;
 
     /**
