@@ -2,13 +2,11 @@ package main;
 
 import entities.Corpus;
 import entities.Song;
-import entities.Word;
 import org.hibernate.Transaction;
 import plsa.PLSA;
 import storage.Hibernator;
 
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainHibernateTest {
