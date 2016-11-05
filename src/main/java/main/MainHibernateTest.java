@@ -7,19 +7,23 @@ import org.hibernate.Transaction;
 import plsa.PLSA;
 import storage.Hibernator;
 
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainHibernateTest {
 
     public static void main(String[] args) throws Exception {
-        Corpus corpus = new Corpus();
-        Word word = new Word("hi",2);
-        List<Word> wordList =  new ArrayList<>();
-        wordList.add(word);
-        corpus.add(new Song(9,"i","you and i",wordList));
 
-        PLSA plsa = new PLSA(corpus,1,1);
+        Corpus c = new Corpus();
+
+        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
+        List<Song> songs = query.getResultList();
+
+        songs.forEach((song) -> c.add(song));
+
+        PLSA plsa = new PLSA(c, 10, 5);
+        plsa.run();
 
         Transaction trans = Hibernator.mainSession.beginTransaction();
         Hibernator.mainSession.save(plsa);
