@@ -20,17 +20,19 @@ public class PLSA {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @OneToOne
+    @ManyToOne
     @Cascade(CascadeType.ALL)
     public Corpus corpus;
 
     public int numTopics;
     public int iterations;
 
+    public int iteration = 0;
+
     /**
      * Document-term-matrix
      */
-    @Lob
+    @Transient
     public short[][] docTermMatrix;
 
     /**
@@ -72,7 +74,7 @@ public class PLSA {
 
         Util.log("Starting EM-algorithm with " + iterations + " iterations");
 
-        for (int iteration = 0; iteration < iterations; iteration++) {
+        for (iteration = 0; iteration < iterations; iteration++) {
 
             Util.log("Starting E step (iteration #" + (iteration + 1) + ")");
 

@@ -2,6 +2,7 @@ package main;
 
 import entities.Corpus;
 import entities.Song;
+import org.hibernate.Transaction;
 import plsa.PLSA;
 import plsa.Result;
 import plsa.Similarity;
@@ -15,6 +16,7 @@ import java.util.*;
  * @author fridalufa
  */
 public class Main {
+
     public static void main(String[] args) {
 
         Corpus c = new Corpus();
@@ -24,12 +26,21 @@ public class Main {
 
         songs.forEach((song) -> c.add(song));
 
+        PLSA plsa = new PLSA(c, 10, 5);
+        try {
+            plsa.run();
+        } catch (RuntimeException e) {
+            System.err.println("An error occured while executing the PLSA algorithm (possibly overfitting!)");
+        } finally {
+            Transaction trans = Hibernator.mainSession.beginTransaction();
+            Hibernator.mainSession.save(plsa);
+            trans.commit();
+        }
+
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
 
-        PLSA plsa = new PLSA(c, 10, 10);
-        plsa.run();
-
+        /*
         // Similarity
         // fake a chosen song
         Song target = plsa.corpus.getSongs().get(10);
@@ -40,7 +51,7 @@ public class Main {
 
         for (Result res : sim.getSimilarSongs(target, 5)) {
             System.out.println(res.song + " (Score: "+res.score+")");
-        }
+        } */
     }
 
 }

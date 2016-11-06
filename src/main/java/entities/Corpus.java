@@ -17,7 +17,7 @@ public class Corpus {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
-    @OneToMany
+    @ManyToMany
     @Cascade(CascadeType.ALL)
     @OrderColumn
     private List<Song> songs;

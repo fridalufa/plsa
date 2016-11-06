@@ -2,28 +2,34 @@ package main;
 
 import entities.Corpus;
 import entities.Song;
-import entities.Word;
 import org.hibernate.Transaction;
 import plsa.PLSA;
 import storage.Hibernator;
 
-import java.util.ArrayList;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class MainHibernateTest {
 
-    public static void main(String[] args) throws Exception {
-        Corpus corpus = new Corpus();
-        Word word = new Word("hi",2);
-        List<Word> wordList =  new ArrayList<>();
-        wordList.add(word);
-        corpus.add(new Song(9,"i","you and i",wordList));
+    public static void main(String[] args) {
 
-        PLSA plsa = new PLSA(corpus,1,1);
+        Corpus c = new Corpus();
 
-        Transaction trans = Hibernator.mainSession.beginTransaction();
-        Hibernator.mainSession.save(plsa);
-        trans.commit();
+        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
+        List<Song> songs = query.getResultList();
+
+        songs.forEach((song) -> c.add(song));
+
+        PLSA plsa = new PLSA(c, 10, 5);
+        try {
+            plsa.run();
+        } catch (RuntimeException e) {
+            System.err.println("An error occured while executing the PLSA algorithm (possibly overfitting!)");
+        } finally {
+            Transaction trans = Hibernator.mainSession.beginTransaction();
+            Hibernator.mainSession.save(plsa);
+            trans.commit();
+        }
 
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
