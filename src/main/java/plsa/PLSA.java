@@ -27,6 +27,8 @@ public class PLSA {
     public int numTopics;
     public int iterations;
 
+    public int iteration = 0;
+
     /**
      * Document-term-matrix
      */
@@ -72,7 +74,7 @@ public class PLSA {
 
         Util.log("Starting EM-algorithm with " + iterations + " iterations");
 
-        for (int iteration = 0; iteration < iterations; iteration++) {
+        for (iteration = 0; iteration < iterations; iteration++) {
 
             Util.log("Starting E step (iteration #" + (iteration + 1) + ")");
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MainHibernateTest {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         Corpus c = new Corpus();
 
@@ -21,11 +21,15 @@ public class MainHibernateTest {
         songs.forEach((song) -> c.add(song));
 
         PLSA plsa = new PLSA(c, 10, 5);
-        plsa.run();
-
-        Transaction trans = Hibernator.mainSession.beginTransaction();
-        Hibernator.mainSession.save(plsa);
-        trans.commit();
+        try {
+            plsa.run();
+        } catch (RuntimeException e) {
+            System.err.println("An error occured while executing the PLSA algorithm (possibly overfitting!)");
+        } finally {
+            Transaction trans = Hibernator.mainSession.beginTransaction();
+            Hibernator.mainSession.save(plsa);
+            trans.commit();
+        }
 
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
