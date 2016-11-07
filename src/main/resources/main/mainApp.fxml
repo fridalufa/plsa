@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainAppController">
    <left>
       <ListView id="lvArtists" fx:id="lvArtists" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
+   <center>
+      <SplitPane dividerPositions="0.3869346733668342" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TableView fx:id="tblSongs" prefHeight="151.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn editable="false" prefWidth="196.0" text="Titel">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="title" /></cellValueFactory>
+                      </TableColumn>
+                        <TableColumn editable="false" prefWidth="200.0" text="Interpret">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="artist" /></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+        </items>
+      </SplitPane>
+   </center>
 </BorderPane>

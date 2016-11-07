@@ -1,12 +1,17 @@
 package gui;
 
 import entities.Song;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.hibernate.Criteria;
 import storage.Hibernator;
+import storage.SongRepository;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,16 +27,27 @@ public class MainAppController {
     private ListView<String> lvArtists;
 
     @FXML
-    public void initialize() {
-        lvArtists.setItems(fetchArtists());
+    private TableView<SongDataModel> tblSongs;
+
+    private SongRepository songRepository;
+
+    public MainAppController() {
+        this.songRepository = new SongRepository();
     }
 
-    protected ObservableList<String> fetchArtists() {
+    @FXML
+    public void initialize() {
+        lvArtists.setItems(songRepository.fetchArtists());
 
-        Hibernator.mainSession.beginTransaction();
-        TypedQuery<Song> q = Hibernator.mainSession.createQuery("select s from Song s group by s.interpret order by s.interpret", Song.class);
-        List<String> artists = q.getResultList().stream().map((Song s) -> s.interpret).collect(Collectors.toList());
-        Hibernator.mainSession.getTransaction().commit();
-        return FXCollections.observableArrayList(artists);
+        lvArtists.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> tblSongs.setItems(fetchSongsOfArtist(newValue)));
+    }
+
+    protected ObservableList<SongDataModel> fetchSongsOfArtist(String artist) {
+        List<SongDataModel> models = songRepository.fetchSongsOfArtist(artist).stream()
+                .map(SongDataModel::new).collect(Collectors.toList());
+
+        return FXCollections.observableArrayList(models);
     }
 }

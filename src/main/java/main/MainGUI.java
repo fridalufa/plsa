@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import storage.Hibernator;
 
 import java.io.IOException;
 
@@ -21,6 +22,11 @@ public class MainGUI extends Application {
         primaryStage.setTitle("PLSA");
         Scene s = new Scene(root);
         primaryStage.setScene(s);
+
+        primaryStage.setOnCloseRequest(event -> {
+            Hibernator.mainSession.close();
+            Hibernator.sessionFactory.close();
+        });
 
         primaryStage.show();
     }
