@@ -3,7 +3,9 @@ package plsa;
 
 import entities.Song;
 import plsa.metrics.CosineSimilarity;
+import plsa.metrics.KullbackLeiblerDivergence;
 import plsa.metrics.Metric;
+import plsa.metrics.SSDSimilarity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,9 @@ public class Similarity {
     public PLSA plsa;
 
     public static Metric[] availableMetrics = {
-            new CosineSimilarity()
+            new CosineSimilarity(),
+            new SSDSimilarity(),
+            new KullbackLeiblerDivergence()
     };
 
     public Similarity(PLSA plsa) {
