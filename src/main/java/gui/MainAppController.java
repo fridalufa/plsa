@@ -1,21 +1,16 @@
 package gui;
 
 import entities.Song;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import entities.Word;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import org.hibernate.Criteria;
-import storage.Hibernator;
+import javafx.scene.control.TextField;
 import storage.SongRepository;
 
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +24,12 @@ public class MainAppController {
     @FXML
     private TableView<SongDataModel> tblSongs;
 
+    @FXML
+    private TableView<WordDataModel> tblWords;
+
+    @FXML
+    private TextField txtFilterArtists;
+
     private SongRepository songRepository;
 
     public MainAppController() {
@@ -37,11 +38,33 @@ public class MainAppController {
 
     @FXML
     public void initialize() {
-        lvArtists.setItems(songRepository.fetchArtists());
+
+        FilteredList<String> filteredList = new FilteredList<String>(songRepository.fetchArtists(), s -> true);
+        txtFilterArtists.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.length() == 0) {
+                filteredList.setPredicate(s -> true);
+            } else {
+                filteredList.setPredicate(s -> s.contains(newValue));
+            }
+        });
+
+        lvArtists.setItems(filteredList);
 
         lvArtists.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> tblSongs.setItems(fetchSongsOfArtist(newValue)));
+                .addListener((observable, oldValue, newValue) -> {
+                    tblWords.setItems(FXCollections.observableArrayList());
+                    tblSongs.setItems(fetchSongsOfArtist(newValue));
+                });
+
+        tblSongs.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                Song selectedSong = newValue.getSong();
+                tblWords.setItems(prepareLyrics(selectedSong.lyrics));
+            } else {
+                tblWords.setItems(FXCollections.observableArrayList());
+            }
+        });
     }
 
     protected ObservableList<SongDataModel> fetchSongsOfArtist(String artist) {
@@ -49,5 +72,12 @@ public class MainAppController {
                 .map(SongDataModel::new).collect(Collectors.toList());
 
         return FXCollections.observableArrayList(models);
+    }
+
+    protected ObservableList<WordDataModel> prepareLyrics(List<Word> lyrics) {
+        List<WordDataModel> wordDataModels = lyrics.stream()
+                .map(WordDataModel::new).collect(Collectors.toList());
+
+        return FXCollections.observableArrayList(wordDataModels);
     }
 }

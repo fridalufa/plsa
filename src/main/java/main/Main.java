@@ -24,7 +24,7 @@ public class Main {
         TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
         List<Song> songs = query.getResultList();
 
-        songs.forEach((song) -> c.add(song));
+        songs.forEach(c::add);
 
         PLSA plsa = new PLSA(c, 10, 5);
         try {
