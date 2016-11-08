@@ -158,5 +158,9 @@ public class PLSA {
         return docTermMatrix;
     }
 
+    public float[] topicProbForSong(Song song) {
+        int i = corpus.getSongs().indexOf(song);
 
+        return docTopicProb[i];
+    }
 }

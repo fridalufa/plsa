@@ -63,7 +63,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <PieChart fx:id="chtTopicDistribution" layoutX="-25.0" layoutY="1.0" prefHeight="266.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <PieChart fx:id="chtTopicDistribution" layoutX="-25.0" layoutY="1.0" legendSide="LEFT" prefHeight="266.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children></AnchorPane>
                         </content>
                       </Tab>
@@ -73,4 +73,12 @@
         </items>
       </SplitPane>
    </center>
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <Label text="PLSA-Ausführung:" />
+            <ComboBox fx:id="cmbPlsaRunSelector" prefHeight="27.0" prefWidth="252.0" />
+         </items>
+      </ToolBar>
+   </top>
 </BorderPane>
