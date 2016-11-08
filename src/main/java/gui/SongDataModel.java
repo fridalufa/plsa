@@ -36,4 +36,12 @@ public class SongDataModel {
     public Song getSong() {
         return song;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SongDataModel) {
+            return song.equals(((SongDataModel) obj).getSong());
+        }
+        return super.equals(obj);
+    }
 }

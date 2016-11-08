@@ -21,6 +21,6 @@ public class PlsaRunInfo {
 
     @Override
     public String toString() {
-        return "Corpus " + corpus.getId() + " (" + numTopics + " topics, " + iterations + " iterations)";
+        return id.toString() + ". Corpus " + corpus.getId() + " (" + numTopics + " topics, " + iterations + " iterations)";
     }
 }

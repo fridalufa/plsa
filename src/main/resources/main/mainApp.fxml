@@ -12,7 +12,7 @@
       <AnchorPane>
          <children>
             <ListView id="lvArtists" fx:id="lvArtists" layoutY="47.0" prefHeight="353.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0" BorderPane.alignment="CENTER" />
-            <TextField fx:id="txtFilterArtists" layoutX="7.0" layoutY="8.0" prefHeight="27.0" prefWidth="189.0" promptText="Filter Artists..." AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0" />
+            <TextField fx:id="txtFilterArtists" layoutX="7.0" layoutY="8.0" prefHeight="27.0" prefWidth="189.0" promptText="Interpreten filtern..." AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0" />
          </children>
       </AnchorPane>
    </left>
@@ -67,6 +67,27 @@
                                  </children></AnchorPane>
                         </content>
                       </Tab>
+                        <Tab text="Similarity">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane layoutX="163.0" layoutY="-9.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <top>
+                                          <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                            <items>
+                                                <ComboBox fx:id="cmbSelectMetric" prefWidth="150.0" promptText="Metrik wählen" />
+                                              <Button mnemonicParsing="false" onAction="#startSearch" text="Suche starten" />
+                                            </items>
+                                          </ToolBar>
+                                       </top>
+                                       <center>
+                                          <ListView fx:id="lstSimilarSongs" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
                     </tabs>
                   </TabPane>
                </children></AnchorPane>

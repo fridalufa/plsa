@@ -22,4 +22,9 @@ public class Result implements Comparable<Result>{
 
         return (this.score < o.score) ? 1 : -1;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%.2f)", song.toString(), score);
+    }
 }
