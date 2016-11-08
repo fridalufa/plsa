@@ -13,11 +13,20 @@ import java.util.stream.Collectors;
  */
 public class SongRepository {
 
+    protected Integer corpusId = 0;
+
+    public void selectCorpus(Integer corpusId) {
+        this.corpusId = corpusId;
+    }
+
     public List<Song> fetchSongsOfArtist(String artist) {
 
         Hibernator.mainSession.beginTransaction();
-        String hqlQuery = "select s from Song s where s.interpret=:artist";
-        TypedQuery<Song> query = Hibernator.mainSession.createQuery(hqlQuery, Song.class).setParameter("artist", artist);
+        String hqlQuery = "select s from Corpus as c left join c.songs as s where c.id=:corpus and s.interpret=:artist";
+        TypedQuery<Song> query = Hibernator.mainSession
+                .createQuery(hqlQuery, Song.class)
+                .setParameter("artist", artist)
+                .setParameter("corpus", corpusId);
         List<Song> results = query.getResultList();
         Hibernator.mainSession.getTransaction().commit();
 
@@ -26,11 +35,14 @@ public class SongRepository {
 
     public ObservableList<String> fetchArtists() {
 
-        String hqlQuery = "select s from Song s group by s.interpret order by s.interpret";
+        //String hqlQuery = "select s from Song s group by s.interpret order by s.interpret";
+        String hqlQuery = "select s from Corpus as c left join c.songs as s where c.id=:corpus group by s.interpret order by s.interpret";
 
         Hibernator.mainSession.beginTransaction();
 
-        TypedQuery<Song> q = Hibernator.mainSession.createQuery(hqlQuery, Song.class);
+        TypedQuery<Song> q = Hibernator.mainSession
+                .createQuery(hqlQuery, Song.class)
+                .setParameter("corpus", corpusId);
         List<String> artists = q.getResultList().stream()
                 .map((Song s) -> s.interpret).collect(Collectors.toList());
 

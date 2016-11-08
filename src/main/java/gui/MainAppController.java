@@ -34,12 +34,13 @@ public class MainAppController {
 
     public MainAppController() {
         this.songRepository = new SongRepository();
+        this.songRepository.selectCorpus(2);
     }
 
     @FXML
     public void initialize() {
 
-        FilteredList<String> filteredList = new FilteredList<String>(songRepository.fetchArtists(), s -> true);
+        FilteredList<String> filteredList = new FilteredList<>(songRepository.fetchArtists(), s -> true);
         txtFilterArtists.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.length() == 0) {
                 filteredList.setPredicate(s -> true);
@@ -68,14 +69,14 @@ public class MainAppController {
         });
     }
 
-    protected ObservableList<SongDataModel> fetchSongsOfArtist(String artist) {
+    private ObservableList<SongDataModel> fetchSongsOfArtist(String artist) {
         List<SongDataModel> models = songRepository.fetchSongsOfArtist(artist).stream()
                 .map(SongDataModel::new).collect(Collectors.toList());
 
         return FXCollections.observableArrayList(models);
     }
 
-    protected ObservableList<WordDataModel> prepareLyrics(List<Word> lyrics) {
+    private ObservableList<WordDataModel> prepareLyrics(List<Word> lyrics) {
         List<WordDataModel> wordDataModels = lyrics.stream()
                 .map(WordDataModel::new).collect(Collectors.toList());
 
