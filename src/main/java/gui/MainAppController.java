@@ -57,7 +57,8 @@ public class MainAppController {
                     tblSongs.setItems(fetchSongsOfArtist(newValue));
                 });
 
-        tblSongs.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        tblSongs.getSelectionModel()
+                .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 Song selectedSong = newValue.getSong();
                 tblWords.setItems(prepareLyrics(selectedSong.lyrics));
