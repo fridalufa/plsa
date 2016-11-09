@@ -5,10 +5,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -23,11 +20,12 @@ public class Corpus {
     private List<Song> songs;
 
     @ElementCollection
-    private Set<String> vocabulary;
+    @OrderBy()
+    private SortedSet<String> vocabulary;
 
     public Corpus(){
         this.songs = new ArrayList<>();
-        this.vocabulary = new HashSet<>();
+        this.vocabulary = new TreeSet<>();
     }
 
     public void add(Song song){

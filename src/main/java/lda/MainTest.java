@@ -17,13 +17,13 @@ import java.util.regex.Pattern;
 public class MainTest {
 
     public static final int numTopics = 100;
-    public static final int numIterations = 50;
+    public static final int numIterations = 20;
 
     public static void main(String[] args) throws Exception {
 
         Corpus corpus = new Corpus();
 
-        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
+        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(50000);
         List<Song> songs = query.getResultList();
 
         songs.forEach(corpus::add);
@@ -72,7 +72,7 @@ public class MainTest {
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
 
-        /*
+
         // The data alphabet maps word IDs to strings
         Alphabet dataAlphabet = instances.getDataAlphabet();
 
@@ -87,17 +87,44 @@ public class MainTest {
 
         // Estimate the topic distribution of the first instance,
         //  given the current Gibbs state.
-        double[] topicDistribution = model.getTopicProbabilities(0);
+        //double[] topicDistribution = model.getTopicProbabilities(0);
 
         // Get an array of sorted sets of word ID/count pairs
         ArrayList<TreeSet<IDSorter>> topicSortedWords = model.getSortedWords();
+        double[][] topicWords = model.getTopicWords(true, false);
+        System.out.println(Arrays.toString(topicWords[0]));
+
+        int max = 0;
+        double maxVal = 0;
+        for (int i = 0; i < topicWords[0].length; i++) {
+            if (topicWords[0][i] > maxVal) {
+                maxVal = topicWords[0][i];
+                max = i;
+            }
+        }
+
+        System.out.println("Max index: "+max+" l: "+topicWords[0].length);
+        System.out.println(dataAlphabet.lookupObject(max));
+
+        System.out.println(Arrays.toString(model.getTopWords(5)[0]));
+
+        Iterator it = dataAlphabet.iterator();
+        int i = 0;
+        System.out.println(dataAlphabet.size());
+        /*while(it.hasNext()) {
+            //System.out.println(it.next()+" i: "+(i++));
+        }*/
+
+        for (IDSorter idCountPair : topicSortedWords.get(0)) {
+            //System.out.println(idCountPair.getID() + " w: "+idCountPair.getWeight());
+        }
 
         // Show top 5 words in topics with proportions for the first document
-        for (int topic = 0; topic < numTopics; topic++) {
+        /*for (int topic = 0; topic < numTopics; topic++) {
             Iterator<IDSorter> iterator = topicSortedWords.get(topic).iterator();
 
             out = new Formatter(new StringBuilder(), Locale.US);
-            out.format("%d\t%.3f\t", topic, topicDistribution[topic]);
+            //out.format("%d\t%.3f\t", topic, topicDistribution[topic]);
             int rank = 0;
             while (iterator.hasNext() && rank < 5) {
                 IDSorter idCountPair = iterator.next();
@@ -105,7 +132,7 @@ public class MainTest {
                 rank++;
             }
             System.out.println(out);
-        }
+        }*Z
         /*
         // Create a new instance with high probability of topic 0
         StringBuilder topicZeroText = new StringBuilder();
