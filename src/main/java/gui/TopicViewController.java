@@ -64,7 +64,6 @@ public class TopicViewController {
         lstTopics.setItems(FXCollections.observableArrayList(
                 IntStream.range(0, plsa.numTopics).mapToObj(Topic::new).collect(Collectors.toList())
         ));
-        System.out.println(plsa.corpus.getVocabulary());
     }
 
     private ObservableList<TopicWordModel> getWordsInTopic(Topic topic) {
