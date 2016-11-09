@@ -26,7 +26,7 @@ public class Main {
 
         songs.forEach(c::add);
 
-        PLSA plsa = new PLSA(c, 10, 5);
+        PLSA plsa = new PLSA(c, 10, 10);
         try {
             plsa.run();
         } catch (RuntimeException e) {

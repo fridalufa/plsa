@@ -35,7 +35,7 @@ public class Corpus {
         vocabulary.addAll(song.lyrics.stream().map(w -> w.word).collect(Collectors.toList()));
     }
 
-    public Set<String> getVocabulary(){
+    public SortedSet<String> getVocabulary(){
         return vocabulary;
     }
 
