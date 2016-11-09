@@ -3,7 +3,10 @@ package lda;
 import cc.mallet.pipe.*;
 import cc.mallet.types.*;
 import cc.mallet.topics.*;
+import entities.Corpus;
 import entities.Song;
+import org.hibernate.Transaction;
+import plsa.PLSA;
 import storage.Hibernator;
 
 import javax.persistence.TypedQuery;
@@ -13,16 +16,19 @@ import java.util.regex.Pattern;
 
 public class MainTest {
 
+    public static final int numTopics = 100;
+    public static final int numIterations = 50;
+
     public static void main(String[] args) throws Exception {
 
-
-        //ImporterExample importer = new ImporterExample();
-        //InstanceList instances = importer.readDirectory(new File("/Users/luca/Downloads/mallet-2.0.8RC3/sample-data/web/de"));
+        Corpus corpus = new Corpus();
 
         TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
         List<Song> songs = query.getResultList();
 
-        Iterator<Instance> instancesIterator = songs.stream().map((song) -> Song2InstanceTransformer.transform(song)).iterator();
+        songs.forEach(corpus::add);
+
+        Iterator<Instance> instancesIterator = corpus.getSongs().stream().map((song) -> Song2InstanceTransformer.transform(song)).iterator();
         InstanceList instances = new InstanceList(buildPipe());
         instances.addThruPipe(instancesIterator);
 
@@ -30,7 +36,6 @@ public class MainTest {
         // Create a model with 100 topics, alpha_t = 0.01, beta_w = 0.01
         //  Note that the first parameter is passed as the sum over topics, while
         //  the second is the parameter for a single dimension of the Dirichlet prior.
-        int numTopics = 100;
         ParallelTopicModel model = new ParallelTopicModel(numTopics, 1.0, 0.01);
 
         model.addInstances(instances);
@@ -41,13 +46,33 @@ public class MainTest {
 
         // Run the model for 50 iterations and stop (this is for testing only,
         //  for real applications, use 1000 to 2000 iterations)
-        model.setNumIterations(50);
+        model.setNumIterations(numIterations);
         model.estimate();
 
-        // Show the words and topics in the first instance
-        System.out.println(Arrays.toString(model.getTopicProbabilities(0)));
-        System.out.println(model.getData().get(0).topicSequence);
-        System.exit(0);
+
+        // fake a PLSA instance
+        PLSA plsa = new PLSA(corpus, numTopics, numIterations);
+
+        plsa.docTopicProb = new float[corpus.getSongs().size()][];
+        for (int d = 0; d < corpus.getSongs().size(); d++) {
+
+            // double array to float array
+            double[] dTopics = model.getTopicProbabilities(d);
+            float[] topics = new float[numTopics];
+            for (int t = 0; t < numTopics; t++) {
+                topics[t] = (float) dTopics[t];
+            }
+
+            plsa.docTopicProb[d] = topics;
+        }
+
+        Transaction trans = Hibernator.mainSession.beginTransaction();
+        Hibernator.mainSession.save(plsa);
+        trans.commit();
+        Hibernator.mainSession.close();
+        Hibernator.sessionFactory.close();
+
+        /*
         // The data alphabet maps word IDs to strings
         Alphabet dataAlphabet = instances.getDataAlphabet();
 
