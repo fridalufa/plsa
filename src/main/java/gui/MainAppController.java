@@ -17,6 +17,7 @@ import storage.PlsaRepository;
 import storage.PlsaRunInfo;
 import storage.SongRepository;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -221,5 +222,13 @@ public class MainAppController {
         lstSimilarSongs.setItems(
                 FXCollections.observableArrayList(similarity.getSimilarSongs(selectedSong, 10, selectedMetric))
         );
+    }
+
+    public void showTopicWindow(ActionEvent actionEvent) {
+        try {
+            TopicViewController.open().setPlsa(selectedPLSA);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

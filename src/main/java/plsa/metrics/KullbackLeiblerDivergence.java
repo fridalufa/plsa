@@ -1,5 +1,7 @@
 package plsa.metrics;
 
+import plsa.Result;
+
 import java.util.stream.IntStream;
 
 /**
@@ -12,7 +14,18 @@ public class KullbackLeiblerDivergence implements Metric {
     }
 
     @Override
+    public int compareResults(Result a, Result b) {
+        if (Math.abs(a.score - b.score) < 1e-6) {
+            return 0;
+        }
+
+        return (a.score > b.score) ? 1 : -1;
+    }
+
+    @Override
     public String toString() {
         return "Kullback-Leibler-Divergenz";
     }
+
+
 }

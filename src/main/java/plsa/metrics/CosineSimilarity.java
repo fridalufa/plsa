@@ -1,5 +1,7 @@
 package plsa.metrics;
 
+import plsa.Result;
+
 import java.util.stream.IntStream;
 
 /**
@@ -14,6 +16,15 @@ public class CosineSimilarity implements Metric {
         float v2Len = (float) Math.sqrt(IntStream.range(0, v2.length).mapToDouble(i -> Math.sqrt(v2[i])).parallel().sum());
 
         return dotProduct / v1Len * v2Len;
+    }
+
+    @Override
+    public int compareResults(Result a, Result b) {
+        if (Math.abs(a.score - b.score) < 1e-6) {
+            return 0;
+        }
+
+        return (a.score < b.score) ? 1 : -1;
     }
 
     @Override

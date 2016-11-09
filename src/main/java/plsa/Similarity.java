@@ -35,7 +35,7 @@ public class Similarity {
         for (int i = 0; i < plsa.docTopicProb.length; i++) {
             if (i != targetIndex) {
                 float score = metric.calculate(targetTopicDist, plsa.docTopicProb[i]);
-                results.add(new Result(plsa.corpus.getSongs().get(i), score));
+                results.add(new Result(plsa.corpus.getSongs().get(i), score, metric));
             }
         }
 

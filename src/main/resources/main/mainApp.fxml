@@ -99,6 +99,7 @@
          <items>
             <Label text="PLSA-Ausführung:" />
             <ComboBox fx:id="cmbPlsaRunSelector" prefHeight="27.0" prefWidth="252.0" />
+            <Button mnemonicParsing="false" onAction="#showTopicWindow" text="Topics" />
          </items>
       </ToolBar>
    </top>
