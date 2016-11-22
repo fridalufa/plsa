@@ -28,11 +28,21 @@ public class MainImport {
             throw new Exception("to few arguments");
         }
 
+        int offset = 0;
+        if (args.length >= 2) {
+            offset = new Integer(args[1]);
+        }
+
+        int limit = 1000;
+        if (args.length == 3) {
+            limit = new Integer(args[2]);
+        }
+
         pathToSqlite = args[0];
 
         establishSQLiteConnection();
 
-        importTracks();
+        importTracks(offset, limit);
 
         closeSQLiteConnection();
 
@@ -40,7 +50,7 @@ public class MainImport {
         Hibernator.sessionFactory.close();
     }
 
-    private static void importTracks() {
+    private static void importTracks(int offset, int limit) {
         try {
             Statement statementTracks = connection.createStatement();
             Statement statementLyrics = connection.createStatement();
@@ -48,8 +58,12 @@ public class MainImport {
             statementTracks.setQueryTimeout(120);
 
             ResultSet track = statementTracks.executeQuery(
-                    "select * from tracks"
+                    "select * from tracks order by mxm_id ASC limit " + offset + ", " + limit
             );
+
+            int commitCounter = 0;
+
+            transaction = Hibernator.mainSession.beginTransaction();
 
             while (track.next()) {
                 ResultSet lyric = statementLyrics.executeQuery(
@@ -78,12 +92,16 @@ public class MainImport {
                         lyrics
                 );
 
-                transaction = Hibernator.mainSession.beginTransaction();
-
                 Hibernator.mainSession.save(s);
 
-                transaction.commit();
+                if (++commitCounter % 100 == 0) {
+                    transaction.commit();
+
+                    transaction = Hibernator.mainSession.beginTransaction();
+                }
             }
+
+            transaction.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }

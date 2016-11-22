@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainAppController">
+   <left>
+      <AnchorPane>
+         <children>
+            <ListView id="lvArtists" fx:id="lvArtists" layoutY="47.0" prefHeight="353.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="47.0" BorderPane.alignment="CENTER" />
+            <TextField fx:id="txtFilterArtists" layoutX="7.0" layoutY="8.0" prefHeight="27.0" prefWidth="189.0" promptText="Interpreten filtern..." AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="8.0" />
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <SplitPane dividerPositions="0.3869346733668342" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TableView fx:id="tblSongs" prefHeight="151.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn editable="false" prefWidth="196.0" text="Titel">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="title" /></cellValueFactory>
+                      </TableColumn>
+                        <TableColumn editable="false" prefWidth="200.0" text="Interpret">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="artist" /></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TabPane layoutX="1.0" layoutY="20.0" prefHeight="200.0" prefWidth="275.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <tabs>
+                      <Tab text="Words">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TableView fx:id="tblWords" layoutX="118.0" layoutY="4.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <columns>
+                                        <TableColumn prefWidth="127.0" text="Wort">
+                                            <cellValueFactory>
+                                                <PropertyValueFactory property="word" /></cellValueFactory>
+                                        </TableColumn>
+                                        <TableColumn prefWidth="131.0" text="Anzahl">
+                                            <cellValueFactory>
+                                                <PropertyValueFactory property="count" /></cellValueFactory>
+                                        </TableColumn>
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="Topics">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <PieChart fx:id="chtTopicDistribution" layoutX="-25.0" layoutY="1.0" legendSide="LEFT" prefHeight="266.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                 </children></AnchorPane>
+                        </content>
+                      </Tab>
+                        <Tab text="Similarity">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane layoutX="163.0" layoutY="-9.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <top>
+                                          <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                            <items>
+                                                <ComboBox fx:id="cmbSelectMetric" prefWidth="150.0" promptText="Metrik wählen" />
+                                              <Button mnemonicParsing="false" onAction="#startSearch" text="Suche starten" />
+                                            </items>
+                                          </ToolBar>
+                                       </top>
+                                       <center>
+                                          <ListView fx:id="lstSimilarSongs" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+            <Label text="PLSA-Ausführung:" />
+            <ComboBox fx:id="cmbPlsaRunSelector" prefHeight="27.0" prefWidth="252.0" />
+            <Button mnemonicParsing="false" onAction="#showTopicWindow" text="Topics" />
+         </items>
+      </ToolBar>
+   </top>
+</BorderPane>

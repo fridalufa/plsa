@@ -41,5 +41,7 @@ public class Corpus {
         return songs;
     }
 
-
+    public Integer getId() {
+        return id;
+    }
 }

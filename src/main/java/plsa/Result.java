@@ -1,25 +1,28 @@
 package plsa;
 
 import entities.Song;
+import plsa.metrics.Metric;
 
 public class Result implements Comparable<Result>{
 
     public Song song;
     public float score;
+    private Metric metric;
 
-    public Result(Song song, float score) {
+    public Result(Song song, float score, Metric metric) {
         this.song = song;
         this.score = score;
+        this.metric = metric;
     }
 
 
     @Override
     public int compareTo(Result o) {
+        return metric.compareResults(this, o);
+    }
 
-        if (Math.abs(this.score - o.score) < 1e-6) {
-            return 0;
-        }
-
-        return (this.score < o.score) ? 1 : -1;
+    @Override
+    public String toString() {
+        return String.format("%s (%.2f)", song.toString(), score);
     }
 }

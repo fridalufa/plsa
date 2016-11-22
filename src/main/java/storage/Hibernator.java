@@ -20,7 +20,8 @@ public class Hibernator {
 
     static {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-        sessionFactory = new Configuration()
+        sessionFactory = new Configuration().configure("/storage/hibernate.cfg.xml").buildSessionFactory();
+        /*sessionFactory = new Configuration()
                 .addAnnotatedClass(Song.class)
                 .addAnnotatedClass(Word.class)
                 .addAnnotatedClass(Corpus.class)
@@ -29,7 +30,7 @@ public class Hibernator {
                 .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/plsa?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
                 .setProperty("hibernate.connection.username", "plsa")
                 .setProperty("hibernate.hbm2ddl.auto", "update")
-                .buildSessionFactory();
+                .buildSessionFactory();*/
 
         mainSession = sessionFactory.openSession();
     }
