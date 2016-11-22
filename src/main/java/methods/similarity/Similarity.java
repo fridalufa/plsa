@@ -1,11 +1,12 @@
-package plsa;
+package methods.similarity;
 
 
 import entities.Song;
-import plsa.metrics.CosineSimilarity;
-import plsa.metrics.KullbackLeiblerDivergence;
-import plsa.metrics.Metric;
-import plsa.metrics.SSDSimilarity;
+import methods.plsa.PLSA;
+import methods.similarity.metrics.CosineSimilarity;
+import methods.similarity.metrics.KullbackLeiblerDivergence;
+import methods.similarity.metrics.Metric;
+import methods.similarity.metrics.SSDSimilarity;
 
 import java.util.ArrayList;
 import java.util.List;

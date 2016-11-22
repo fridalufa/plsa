@@ -1,7 +1,7 @@
 package storage;
 
 import entities.Corpus;
-import plsa.PLSA;
+import methods.plsa.PLSA;
 
 import java.util.List;
 import java.util.stream.Collectors;

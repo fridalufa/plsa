@@ -19,7 +19,7 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("mainApp.fxml"));
 
-        primaryStage.setTitle("PLSA");
+        primaryStage.setTitle("Similarity by Lyrics");
         Scene s = new Scene(root);
         primaryStage.setScene(s);
 

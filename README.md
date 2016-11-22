@@ -1,2 +1,2 @@
-# plsa
-Nice little plsa implementation
+# methods
+Nice little similarity by lyrics implementation

@@ -1,6 +1,6 @@
-package plsa.metrics;
+package methods.similarity.metrics;
 
-import plsa.Result;
+import methods.similarity.Result;
 
 /**
  * @author fridalufa

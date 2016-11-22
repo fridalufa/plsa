@@ -1,20 +1,13 @@
-package lda;
+package main;
 
-import cc.mallet.pipe.*;
-import cc.mallet.types.*;
-import cc.mallet.topics.*;
 import entities.Corpus;
 import entities.Song;
-import org.hibernate.Transaction;
-import plsa.PLSA;
 import storage.Hibernator;
 
 import javax.persistence.TypedQuery;
 import java.util.*;
-import java.io.*;
-import java.util.regex.Pattern;
 
-public class MainTest {
+public class MainLDA {
 
     public static final int numTopics = 100;
     public static final int numIterations = 20;
@@ -27,7 +20,7 @@ public class MainTest {
         List<Song> songs = query.getResultList();
 
         songs.forEach(corpus::add);
-
+/*
         Iterator<Instance> instancesIterator = corpus.getSongs().stream().map((song) -> Song2InstanceTransformer.transform(song)).iterator();
         InstanceList instances = new InstanceList(buildPipe());
         instances.addThruPipe(instancesIterator);
@@ -115,9 +108,9 @@ public class MainTest {
             //System.out.println(it.next()+" i: "+(i++));
         }*/
 
-        for (IDSorter idCountPair : topicSortedWords.get(0)) {
+        //for (IDSorter idCountPair : topicSortedWords.get(0)) {
             //System.out.println(idCountPair.getID() + " w: "+idCountPair.getWeight());
-        }
+        //}
 
         // Show top 5 words in topics with proportions for the first document
         /*for (int topic = 0; topic < numTopics; topic++) {
@@ -154,49 +147,6 @@ public class MainTest {
         System.out.println("0\t" + testProbabilities[0]);*/
     }
 
-    private static Pipe buildPipe() {
-        ArrayList pipeList = new ArrayList();
 
-        // Read data from File objects
-        pipeList.add(new Input2CharSequence("UTF-8"));
-
-        // Regular expression for what constitutes a token.
-        //  This pattern includes Unicode letters, Unicode numbers,
-        //   and the underscore character. Alternatives:
-        //    "\\S+"   (anything not whitespace)
-        //    "\\w+"    ( A-Z, a-z, 0-9, _ )
-        //    "[\\p{L}\\p{N}_]+|[\\p{P}]+"   (a group of only letters and numbers OR
-        //                                    a group of only punctuation marks)
-        Pattern tokenPattern =
-                Pattern.compile("[\\p{L}\\p{N}_]+");
-
-        // Tokenize raw strings
-        pipeList.add(new CharSequence2TokenSequence(tokenPattern));
-
-        // Normalize all tokens to all lowercase
-        pipeList.add(new TokenSequenceLowercase());
-
-        // Remove stopwords from a standard English stoplist.
-        //  options: [case sensitive] [mark deletions]
-        pipeList.add(new TokenSequenceRemoveStopwords(false, false));
-
-        // Rather than storing tokens as strings, convert
-        //  them to integers by looking them up in an alphabet.
-        pipeList.add(new TokenSequence2FeatureSequence());
-
-        // Do the same thing for the "target" field:
-        //  convert a class label string to a Label object,
-        //  which has an index in a Label alphabet.
-        pipeList.add(new Target2Label());
-
-        // Now convert the sequence of features to a sparse vector,
-        //  mapping feature IDs to counts.
-        //pipeList.add(new FeatureSequence2FeatureVector());
-
-        // Print out the features and the label
-        //pipeList.add(new PrintInputAndTarget());
-
-        return new SerialPipes(pipeList);
-    }
 
 }

@@ -1,17 +1,16 @@
-package plsa.metrics;
+package methods.similarity.metrics;
 
-import antlr.collections.impl.IntRange;
-import plsa.Result;
+import methods.similarity.Result;
 
 import java.util.stream.IntStream;
 
 /**
  * @author fridalufa
  */
-public class SSDSimilarity implements Metric {
+public class KullbackLeiblerDivergence implements Metric {
     @Override
     public float calculate(float[] v1, float[] v2) {
-        return (float)IntStream.range(0,v1.length).mapToDouble(i -> Math.pow(v1[i] - v2[i], 2)).sum();
+        return (float) IntStream.range(0,v1.length).mapToDouble(i -> v1[i]*Math.log(v1[i]/v2[i])).sum();
     }
 
     @Override
@@ -25,6 +24,8 @@ public class SSDSimilarity implements Metric {
 
     @Override
     public String toString() {
-        return "Sum of Squared Differences";
+        return "Kullback-Leibler-Divergenz";
     }
+
+
 }

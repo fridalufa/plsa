@@ -1,7 +1,7 @@
-package plsa;
+package methods.similarity;
 
 import entities.Song;
-import plsa.metrics.Metric;
+import methods.similarity.metrics.Metric;
 
 public class Result implements Comparable<Result>{
 

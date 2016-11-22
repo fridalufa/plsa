@@ -1,4 +1,4 @@
-package lda;
+package methods.lda;
 
 import cc.mallet.types.Alphabet;
 
