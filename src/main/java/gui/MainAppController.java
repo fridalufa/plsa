@@ -217,11 +217,12 @@ public class MainAppController {
 
         Song selectedSong = songDataModel.getSong();
 
-        Similarity similarity = new Similarity(selectedPLSA);
+        // TODO: fixme
+        //Similarity similarity = new Similarity(selectedPLSA);
 
-        lstSimilarSongs.setItems(
-                FXCollections.observableArrayList(similarity.getSimilarSongs(selectedSong, 10, selectedMetric))
-        );
+        //lstSimilarSongs.setItems(
+        //        FXCollections.observableArrayList(similarity.getSimilarSongs(selectedSong, 10, selectedMetric))
+        //);
     }
 
     public void showTopicWindow(ActionEvent actionEvent) {

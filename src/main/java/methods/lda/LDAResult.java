@@ -4,6 +4,9 @@ package methods.lda;
 import entities.Corpus;
 import methods.ProbabilisticModelResult;
 
+import javax.persistence.Entity;
+
+@Entity
 public class LDAResult extends ProbabilisticModelResult {
 
     // Create a model with 100 topics, alpha_t = 0.01, beta_w = 0.01

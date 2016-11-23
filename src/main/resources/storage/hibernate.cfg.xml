@@ -11,10 +11,10 @@
             com.mysql.jdbc.Driver
         </property>
         <property name="hibernate.connection.url">
-            jdbc:mysql://localhost:3306/methods?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC
+            jdbc:mysql://localhost:3306/plsa?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC
         </property>
         <property name="hibernate.connection.username">
-            methods
+            plsa
         </property>
         <property name="hibernate.hbm2ddl.auto">
             update
@@ -23,6 +23,7 @@
         <mapping class="entities.Corpus"/>
         <mapping class="entities.Song"/>
         <mapping class="entities.Word"/>
-        <mapping class="methods.plsa.PLSA"/>
+        <mapping class="methods.plsa.PLSAResult"/>
+        <mapping class="methods.lda.LDAResult"/>
     </session-factory>
 </hibernate-configuration>

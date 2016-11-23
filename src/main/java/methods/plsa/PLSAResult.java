@@ -3,7 +3,9 @@ package methods.plsa;
 import entities.Corpus;
 import methods.ProbabilisticModelResult;
 
+import javax.persistence.Entity;
 
+@Entity
 public class PLSAResult extends ProbabilisticModelResult {
 
     public PLSAResult() {

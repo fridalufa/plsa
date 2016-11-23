@@ -9,8 +9,6 @@ import java.util.*;
 
 public class MainLDA {
 
-    public static final int numTopics = 100;
-    public static final int numIterations = 20;
 
     public static void main(String[] args) throws Exception {
 

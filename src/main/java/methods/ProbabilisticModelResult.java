@@ -7,7 +7,8 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 
-@Entity
+
+@MappedSuperclass
 public abstract class ProbabilisticModelResult {
 
     @Id
