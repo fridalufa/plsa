@@ -5,5 +5,7 @@ package methods;
  */
 public interface ProbabilisticModelAnalysis {
 
-    public ProbabilisticModelResult run();
+    void run();
+
+    ProbabilisticModelResult getResult();
 }

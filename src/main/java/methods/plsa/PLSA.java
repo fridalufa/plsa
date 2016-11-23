@@ -23,7 +23,7 @@ public class PLSA implements ProbabilisticModelAnalysis {
     }
 
     @Override
-    public ProbabilisticModelResult run() {
+    public void run() {
 
         Util.log("Constructing document-term matrix");
 
@@ -99,7 +99,10 @@ public class PLSA implements ProbabilisticModelAnalysis {
         }
 
         Util.log("Model fitting finished");
+    }
 
+    @Override
+    public ProbabilisticModelResult getResult() {
         return result;
     }
 

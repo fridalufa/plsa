@@ -24,7 +24,7 @@ public class LDA implements ProbabilisticModelAnalysis {
     }
 
     @Override
-    public ProbabilisticModelResult run() {
+    public void run() {
 
         // create a list of mallet instances from the songs
         Iterator<Instance> instancesIterator = result.corpus.getSongs().stream().map(
@@ -62,7 +62,10 @@ public class LDA implements ProbabilisticModelAnalysis {
             result.docTopicProb[d] = topics;
         }
 
+    }
 
+    @Override
+    public ProbabilisticModelResult getResult() {
         return result;
     }
 

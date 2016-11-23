@@ -30,12 +30,12 @@ public class MainPLSA {
 
         PLSA plsa = new PLSA(result);
         try {
-            result = plsa.run();
+            plsa.run();
         } catch (RuntimeException e) {
             System.err.println("An error occured while executing the PLSA algorithm (possibly overfitting!)");
         } finally {
             Transaction trans = Hibernator.mainSession.beginTransaction();
-            Hibernator.mainSession.save(result);
+            Hibernator.mainSession.save(plsa.getResult());
             trans.commit();
         }
 
