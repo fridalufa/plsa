@@ -1,18 +1,21 @@
 package storage;
 
 import entities.Corpus;
+import methods.Method;
 
 /**
  * @author fridalufa
  */
-public class PlsaRunInfo {
+public class RunInfo {
 
+    public Method method;
     public Integer id;
     public Integer numTopics;
     public Integer iterations;
     public Corpus corpus;
 
-    public PlsaRunInfo(Integer id, Integer numTopics, Integer iterations, Corpus corpusId) {
+    public RunInfo(Method method, Integer id, Integer numTopics, Integer iterations, Corpus corpusId) {
+        this.method = method;
         this.id = id;
         this.numTopics = numTopics;
         this.iterations = iterations;
@@ -21,6 +24,6 @@ public class PlsaRunInfo {
 
     @Override
     public String toString() {
-        return id.toString() + ". Corpus " + corpus.getId() + " (" + numTopics + " topics, " + iterations + " iterations)";
+        return method + " " + id.toString() + ". Corpus " + corpus.getId() + " (" + numTopics + " topics, " + iterations + " iterations)";
     }
 }

@@ -127,10 +127,4 @@ public class PLSA implements ProbabilisticModelAnalysis {
 
         return docTermMatrix;
     }
-
-    public float[] topicProbForSong(Song song) {
-        int i = result.corpus.getSongs().indexOf(song);
-
-        return result.docTopicProb[i];
-    }
 }

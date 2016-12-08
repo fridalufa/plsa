@@ -9,15 +9,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
-import methods.plsa.PLSA;
+import methods.ProbabilisticModelResult;
 import methods.similarity.Result;
 import methods.similarity.Similarity;
 import methods.similarity.metrics.Metric;
-import storage.PlsaRepository;
-import storage.PlsaRunInfo;
+import storage.ProbabilisticAnalysisResultRepository;
+import storage.RunInfo;
 import storage.SongRepository;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +40,7 @@ public class MainAppController {
     private TextField txtFilterArtists;
 
     @FXML
-    private ComboBox<PlsaRunInfo> cmbPlsaRunSelector;
+    private ComboBox<RunInfo> cmbProbAnalysisRunSelector;
 
     @FXML
     private PieChart chtTopicDistribution;
@@ -53,9 +52,9 @@ public class MainAppController {
     private ComboBox<Metric> cmbSelectMetric;
 
     private SongRepository songRepository;
-    private PlsaRepository plsaRepository;
+    private ProbabilisticAnalysisResultRepository probAnalysisRepository;
 
-    private PLSA selectedPLSA;
+    private ProbabilisticModelResult selectedRun;
 
     private int numberOfDisplayedTopics = 5;
 
@@ -63,16 +62,19 @@ public class MainAppController {
 
     public MainAppController() {
         this.songRepository = new SongRepository();
-        this.plsaRepository = new PlsaRepository();
+        this.probAnalysisRepository = new ProbabilisticAnalysisResultRepository();
     }
 
     @FXML
     public void initialize() {
 
-        cmbPlsaRunSelector.setItems(FXCollections.observableArrayList(plsaRepository.listPlsaRuns()));
+        List<RunInfo> runs = probAnalysisRepository.listPlsaRuns();
+        runs.addAll(probAnalysisRepository.listLdaRuns());
 
-        cmbPlsaRunSelector.getSelectionModel().selectedItemProperty().addListener((comboBox, oldVal, newVal) -> {
-            selectedPLSA = plsaRepository.fetchPLSA(newVal.id);
+        cmbProbAnalysisRunSelector.setItems(FXCollections.observableArrayList(runs));
+
+        cmbProbAnalysisRunSelector.getSelectionModel().selectedItemProperty().addListener((comboBox, oldVal, newVal) -> {
+            selectedRun = probAnalysisRepository.fetchResult(newVal.method, newVal.id);
 
             this.songRepository.selectCorpus(newVal.corpus.getId());
 
@@ -152,7 +154,7 @@ public class MainAppController {
         tblWords.setItems(prepareLyrics(newSong.lyrics));
         lstSimilarSongs.setItems(FXCollections.observableArrayList());
 
-        float[] topicProbForSong = selectedPLSA.topicProbForSong(newSong);
+        float[] topicProbForSong = selectedRun.topicProbForSong(newSong);
         int[] topElements = indexesOfTopElements(topicProbForSong, numberOfDisplayedTopics);
 
         DoubleStream topEntries = IntStream
@@ -217,19 +219,18 @@ public class MainAppController {
 
         Song selectedSong = songDataModel.getSong();
 
-        // TODO: fixme
-        //Similarity similarity = new Similarity(selectedPLSA);
+        Similarity similarity = new Similarity(selectedRun);
 
-        //lstSimilarSongs.setItems(
-        //        FXCollections.observableArrayList(similarity.getSimilarSongs(selectedSong, 10, selectedMetric))
-        //);
+        lstSimilarSongs.setItems(
+                FXCollections.observableArrayList(similarity.getSimilarSongs(selectedSong, 10, selectedMetric))
+        );
     }
 
     public void showTopicWindow(ActionEvent actionEvent) {
-        try {
-            TopicViewController.open().setPlsa(selectedPLSA);
+        /*try {
+            TopicViewController.open().setPlsa(selectedRun);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/ // TODO
     }
 }

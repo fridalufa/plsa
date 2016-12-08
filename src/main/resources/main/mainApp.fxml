@@ -98,7 +98,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <items>
             <Label text="PLSA-Ausführung:" />
-            <ComboBox fx:id="cmbPlsaRunSelector" prefHeight="27.0" prefWidth="252.0" />
+            <ComboBox fx:id="cmbProbAnalysisRunSelector" prefHeight="27.0" prefWidth="252.0" />
             <Button mnemonicParsing="false" onAction="#showTopicWindow" text="Topics" />
          </items>
       </ToolBar>
