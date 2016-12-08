@@ -27,8 +27,8 @@ public class MainPLSA {
         songs.forEach(c::add);
 
         ProbabilisticModelResult result = new PLSAResult(c, 10, 5);
-
         PLSA plsa = new PLSA(result);
+
         try {
             plsa.run();
         } catch (RuntimeException e) {

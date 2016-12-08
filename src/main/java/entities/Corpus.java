@@ -1,10 +1,13 @@
 package entities;
 
 
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +36,7 @@ public class Corpus {
         vocabulary.addAll(song.lyrics.stream().map(w -> w.word).collect(Collectors.toList()));
     }
 
-    public Set<String> getVocabulary(){
+    public SortedSet<String> getVocabulary(){
         return vocabulary;
     }
 

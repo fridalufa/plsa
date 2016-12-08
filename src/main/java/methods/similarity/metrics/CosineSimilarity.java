@@ -15,7 +15,7 @@ public class CosineSimilarity implements Metric {
         float v1Len = (float) Math.sqrt(IntStream.range(0, v1.length).mapToDouble(i -> Math.sqrt(v1[i])).parallel().sum());
         float v2Len = (float) Math.sqrt(IntStream.range(0, v2.length).mapToDouble(i -> Math.sqrt(v2[i])).parallel().sum());
 
-        return dotProduct / v1Len * v2Len;
+        return Math.abs(dotProduct / v1Len * v2Len);
     }
 
     @Override

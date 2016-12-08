@@ -124,6 +124,7 @@ public class MainAppController {
 
                 shouldBeSelectedSong = new SongDataModel(selectedSong.song);
                 lvArtists.getSelectionModel().select(selectedSong.song.interpret);
+                lvArtists.scrollTo(selectedSong.song.interpret);
             }
         });
 

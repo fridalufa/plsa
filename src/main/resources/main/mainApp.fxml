@@ -75,7 +75,7 @@
                                        <top>
                                           <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                             <items>
-                                                <ComboBox fx:id="cmbSelectMetric" prefWidth="150.0" promptText="Metrik wählen" />
+                                                <ComboBox fx:id="cmbSelectMetric" prefHeight="27.0" prefWidth="240.0" promptText="Metrik wählen" />
                                               <Button mnemonicParsing="false" onAction="#startSearch" text="Suche starten" />
                                             </items>
                                           </ToolBar>
