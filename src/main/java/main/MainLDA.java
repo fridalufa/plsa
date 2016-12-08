@@ -17,12 +17,12 @@ public class MainLDA {
 
         Corpus corpus = new Corpus();
 
-        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(5000);
+        TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
         List<Song> songs = query.getResultList();
 
         songs.forEach(corpus::add);
 
-        LDAResult result = new LDAResult(corpus, 20, 50);
+        LDAResult result = new LDAResult(corpus, 10, 50);
 
         LDA lda = new LDA(result);
         try {

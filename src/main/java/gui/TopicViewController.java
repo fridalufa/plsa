@@ -54,7 +54,7 @@ public class TopicViewController {
     }
 
     public void setProbAnalysisResult(ProbabilisticModelResult result) {
-        this.result = this.result;
+        this.result = result;
         if (this.result != null) {
             updateTopicList();
         }
@@ -71,7 +71,7 @@ public class TopicViewController {
         SortedSet<String> vocabulary = result.corpus.getVocabulary();
         ObservableList<TopicWordModel> topicWordModels = FXCollections.observableArrayList();
         int i = 0;
-        for (String word:vocabulary) {
+        for (String word : vocabulary) {
             topicWordModels.add(new TopicWordModel(word, probs[i++]));
         }
 

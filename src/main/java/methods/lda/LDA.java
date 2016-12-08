@@ -3,14 +3,16 @@ package methods.lda;
 
 import cc.mallet.pipe.*;
 import cc.mallet.topics.ParallelTopicModel;
+import cc.mallet.types.Alphabet;
+import cc.mallet.types.IDSorter;
 import cc.mallet.types.Instance;
 import cc.mallet.types.InstanceList;
+import entities.Word;
 import methods.ProbabilisticModelAnalysis;
 import methods.ProbabilisticModelResult;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class LDA implements ProbabilisticModelAnalysis {
@@ -37,7 +39,7 @@ public class LDA implements ProbabilisticModelAnalysis {
         model.addInstances(instances);
 
         // Use two parallel samplers, which each look at one half the corpus and combine
-        //  statistics after every iteration.
+        // statistics after every iteration.
         model.setNumThreads(2);
 
         // Run the model for the given number of iterations
@@ -49,6 +51,11 @@ public class LDA implements ProbabilisticModelAnalysis {
         }
 
         // populate the results matrices
+        Alphabet dataAlphabet = instances.getDataAlphabet();
+        double[][] topicWords = model.getTopicWords(true, false);
+        result.topicWordProb = (new TopicWordSortHelper(topicWords, dataAlphabet, result.corpus.getVocabulary().size()))
+                .getTopicWordProb();
+
         result.docTopicProb = new float[result.corpus.getSongs().size()][];
         for (int d = 0; d < result.corpus.getSongs().size(); d++) {
 
@@ -107,4 +114,5 @@ public class LDA implements ProbabilisticModelAnalysis {
 
         return new SerialPipes(pipeList);
     }
+
 }

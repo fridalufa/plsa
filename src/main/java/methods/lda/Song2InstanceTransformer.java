@@ -17,7 +17,7 @@ public class Song2InstanceTransformer {
             }
         }
 
-        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length() - 1);
 
         return new Instance(sb.toString(), String.valueOf(song.getId()), String.valueOf(song.getId()), null);
     }
