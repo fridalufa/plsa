@@ -1,6 +1,5 @@
 package gui;
 
-import entities.Word;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import methods.ProbabilisticModelResult;
 import methods.plsa.PLSA;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class TopicViewController {
     @FXML
     private TableView<TopicWordModel> tblWords;
 
-    PLSA plsa;
+    ProbabilisticModelResult result;
 
     public void initialize() {
         lstTopics.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -53,22 +53,22 @@ public class TopicViewController {
         return loader.getController();
     }
 
-    public void setPlsa(PLSA plsa) {
-        this.plsa = plsa;
-        if (plsa != null) {
+    public void setProbAnalysisResult(ProbabilisticModelResult result) {
+        this.result = this.result;
+        if (this.result != null) {
             updateTopicList();
         }
     }
 
     private void updateTopicList() {
         lstTopics.setItems(FXCollections.observableArrayList(
-                IntStream.range(0, plsa.numTopics).mapToObj(Topic::new).collect(Collectors.toList())
+                IntStream.range(0, result.numTopics).mapToObj(Topic::new).collect(Collectors.toList())
         ));
     }
 
     private ObservableList<TopicWordModel> getWordsInTopic(Topic topic) {
-        float[] probs = plsa.topicWordProb[topic.id];
-        SortedSet<String> vocabulary = plsa.corpus.getVocabulary();
+        float[] probs = result.topicWordProb[topic.id];
+        SortedSet<String> vocabulary = result.corpus.getVocabulary();
         ObservableList<TopicWordModel> topicWordModels = FXCollections.observableArrayList();
         int i = 0;
         for (String word:vocabulary) {

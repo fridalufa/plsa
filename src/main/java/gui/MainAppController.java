@@ -17,6 +17,7 @@ import storage.ProbabilisticAnalysisResultRepository;
 import storage.RunInfo;
 import storage.SongRepository;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -228,10 +229,10 @@ public class MainAppController {
     }
 
     public void showTopicWindow(ActionEvent actionEvent) {
-        /*try {
-            TopicViewController.open().setPlsa(selectedRun);
+        try {
+            TopicViewController.open().setProbAnalysisResult(selectedRun);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/ // TODO
+        }
     }
 }
