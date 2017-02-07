@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TopicViewController">
+   <left>
+      <ListView fx:id="lstTopics" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <TableView fx:id="tblWords" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn prefWidth="256.0" text="Wort">
+                <cellValueFactory>
+                    <PropertyValueFactory property="word" /></cellValueFactory>
+            </TableColumn>
+            <TableColumn minWidth="0.0" prefWidth="74.0" text="Relevanz">
+                <cellValueFactory>
+                    <PropertyValueFactory property="propability" /></cellValueFactory>
+            </TableColumn>
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>

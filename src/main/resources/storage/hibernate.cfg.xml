@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+        <property name="hibernate.connection.driver_class">
+            com.mysql.cj.jdbc.Driver
+        </property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/plsa?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC
+        </property>
+        <property name="hibernate.connection.username">
+            plsa
+        </property>
+        <property name="hibernate.hbm2ddl.auto">
+            update
+        </property>
+
+        <mapping class="entities.Corpus"/>
+        <mapping class="entities.Song"/>
+        <mapping class="entities.Word"/>
+        <mapping class="methods.plsa.PLSAResult"/>
+        <mapping class="methods.lda.LDAResult"/>
+    </session-factory>
+</hibernate-configuration>

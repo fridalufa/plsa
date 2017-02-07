@@ -2,10 +2,10 @@ package main;
 
 import entities.Corpus;
 import entities.Song;
+import methods.plsa.PLSAResult;
 import org.hibernate.Transaction;
-import plsa.PLSA;
-import plsa.Result;
-import plsa.Similarity;
+import methods.plsa.PLSA;
+import methods.ProbabilisticModelResult;
 import storage.Hibernator;
 
 import javax.persistence.TypedQuery;
@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * @author fridalufa
  */
-public class Main {
+public class MainPLSA {
 
     public static void main(String[] args) {
 
@@ -24,34 +24,23 @@ public class Main {
         TypedQuery<Song> query = Hibernator.mainSession.createQuery("from Song", Song.class).setMaxResults(500);
         List<Song> songs = query.getResultList();
 
-        songs.forEach((song) -> c.add(song));
+        songs.forEach(c::add);
 
-        PLSA plsa = new PLSA(c, 10, 5);
+        ProbabilisticModelResult result = new PLSAResult(c, 10, 5);
+        PLSA plsa = new PLSA(result);
+
         try {
             plsa.run();
         } catch (RuntimeException e) {
             System.err.println("An error occured while executing the PLSA algorithm (possibly overfitting!)");
         } finally {
             Transaction trans = Hibernator.mainSession.beginTransaction();
-            Hibernator.mainSession.save(plsa);
+            Hibernator.mainSession.save(plsa.getResult());
             trans.commit();
         }
 
         Hibernator.mainSession.close();
         Hibernator.sessionFactory.close();
-
-        /*
-        // Similarity
-        // fake a chosen song
-        Song target = plsa.corpus.getSongs().get(10);
-        System.out.println("Target: "+target);
-        System.out.println("================");
-
-        Similarity sim = new Similarity(plsa);
-
-        for (Result res : sim.getSimilarSongs(target, 5)) {
-            System.out.println(res.song + " (Score: "+res.score+")");
-        } */
     }
 
 }

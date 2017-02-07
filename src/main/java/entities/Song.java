@@ -33,4 +33,8 @@ public class Song {
     public String toString(){
         return this.interpret + " - " + this.title;
     }
+
+    public Integer getId(){
+        return id;
+    }
 }
